@@ -5,6 +5,8 @@ import {registerValidation} from "./validations/auth.js";
 import {validationResult} from "express-validator";
 import UserModel from './models/User.js'
 import bcrypt from "bcrypt";
+import checkAuth from "./utils/checkAuth.js";
+import User from "./models/User.js";
 
 mongoose.connect('mongodb+srv://admin:06111986@cluster0.ziaxbkm.mongodb.net/blog?retryWrites=true&w=majority')
     .then(() => console.log('DB ok'))
@@ -90,7 +92,27 @@ app.post('/auth/register', registerValidation, async (req, res) => {
         console.log(err);
         res.status(500).json({
             message: 'Failed to sign up',
-        })
+        });
+    }
+});
+
+app.get('/auth/me', checkAuth, async (req, res) => {
+    try {
+        const user = await UserModel.findById(req.userId);
+
+        if (!user) {
+            return res.status(404).json({
+                message: 'User is not found',
+            });
+        }
+
+        const { passwordHash, ...userData } = user._doc;
+        res.json(userData);
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            message: 'Access denied',
+        });
     }
 });
 

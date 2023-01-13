@@ -6,7 +6,7 @@ import {checkAuth, handleValidationErrors} from './utils/index.js'
 import multer from "multer";
 import cors from "cors";
 
-mongoose.connect('mongodb+srv://admin:06111986@cluster0.ziaxbkm.mongodb.net/blog?retryWrites=true&w=majority')
+mongoose.connect(process.env.MONGODB_URI.toString())
     .then(() => console.log('DB ok'))
     .catch((err) => console.log('DB error', err));
 

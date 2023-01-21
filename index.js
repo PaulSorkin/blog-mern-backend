@@ -8,7 +8,8 @@ import multer from "multer";
 import cors from "cors";
 
 
-mongoose.connect(process.env.MONGODB_URI)
+//mongoose.connect(process.env.MONGODB_URI)
+mongoose.connect('mongodb+srv://admin:06111986@cluster0.ziaxbkm.mongodb.net/blog?retryWrites=true&w=majority')
     .then(() => console.log('DB ok'))
     .catch((err) => console.log('DB error', err));
 
